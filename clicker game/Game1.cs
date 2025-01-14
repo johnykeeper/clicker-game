@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace clicker_game
@@ -11,6 +12,12 @@ namespace clicker_game
         private SpriteBatch _spriteBatch;
 
         Rectangle window;
+
+        Texture2D moneyTexture;
+        Rectangle moneyRect;
+        Vector2 moneySpeed;
+
+        Random Random = new Random();
 
         Texture2D buttonTexture;
         Rectangle buttonRect;
@@ -29,7 +36,7 @@ namespace clicker_game
         float clickUpgrade, factoryUpgrade;
         float clickUpgradeIncrease, factoryUpgradeIncrease;
         float clickpowerincrease;
-        bool done1, done2, done3, done4, done5, done6, done7, done8, done9, done10;
+        bool done1, moneydraw, moneydraw2, done4, done5, done6, done7, done8, done9, done10;
         float seconds, totalTime;
 
 
@@ -56,9 +63,11 @@ namespace clicker_game
             buttonRect = new Rectangle(0, 0, 350, 350);
             boxRect1 = new Rectangle(500, 0, 350, 125);
             boxRect2 = new Rectangle(500, 125, 350, 125);
-            
+            moneySpeed = new Vector2(10, 10);
+            moneyRect = new Rectangle(0, 0, 100, 100);
 
-            
+
+
 
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 600;
@@ -71,6 +80,8 @@ namespace clicker_game
             factoryUpgradeIncrease = 100;
             clickpowerincrease = 4;
             done1 = true;
+            moneydraw = true;
+            moneydraw2 = false;
             
             seconds = 0;
             totalTime = 0;
@@ -89,6 +100,7 @@ namespace clicker_game
             factoryTexture = Content.Load<Texture2D>("Factory");
             coolbackround = Content.Load<Texture2D>("cool background (1)");
             introbox = Content.Load<Texture2D>("intro (1)");
+            moneyTexture = Content.Load<Texture2D>("money");
         }
 
         protected override void Update(GameTime gameTime)
@@ -211,12 +223,42 @@ namespace clicker_game
                 
             }
 
+            moneyRect.X += (int)moneySpeed.X;
+            moneyRect.Y += (int)moneySpeed.Y;
+            if (moneyRect.Right > window.Width || moneyRect.Left < 0)
+            {
+                moneySpeed.X *= -1;
+            }
+
+            if (moneyRect.Bottom > window.Height || moneyRect.Top < 0)
+            {
+                
+                moneySpeed.Y *= -1;
+            }
+
+            if (totalTime >= Random.Next(1, 10))
+            {
+                if (moneydraw2 == false)
+                {
+                    moneydraw = false;
+                }
+                if(mouseState.LeftButton == ButtonState.Pressed && prevmouseState.LeftButton == ButtonState.Released)
+                {
+                    if(moneyRect.Contains(mouseState.Position))
+                    {
+                        moneydraw = true;
+                        moneydraw2 = true;
+                    }
+
+                }
+            }
 
 
 
 
 
-            if (points >= factoryUpgrade)
+
+                if (points >= factoryUpgrade)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed && prevmouseState.LeftButton == ButtonState.Released)
                 {
@@ -256,15 +298,18 @@ namespace clicker_game
             _spriteBatch.DrawString(pointsFont, clickPower.ToString("current click power: 00"), new Vector2(530, 50), Color.Black);
 
             _spriteBatch.DrawString(pointsFont, points.ToString("upgrade click power"), new Vector2(580, 20), Color.Black);
-            
+            foreach (Rectangle factory in factories)
+                _spriteBatch.Draw(factoryTexture, factory, Color.White);
             _spriteBatch.DrawString(pointsFont, clickUpgrade.ToString("cost: 00 points"), new Vector2(650, 75), Color.Black);
             _spriteBatch.DrawString(pointsFont, factoryUpgrade.ToString("cost: 00 points"), new Vector2(650, 200), Color.Black);
+            if(moneydraw == false)
+                _spriteBatch.Draw(moneyTexture, moneyRect, Color.White);
             if (done1 == true)
             {
                 _spriteBatch.Draw(introbox, window, Color.White);
             }
-            foreach (Rectangle factory in factories)
-                _spriteBatch.Draw(factoryTexture, factory, Color.White);
+
+
 
             _spriteBatch.End();
 
