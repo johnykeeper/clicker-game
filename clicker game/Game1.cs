@@ -17,6 +17,9 @@ namespace clicker_game
         Rectangle moneyRect;
         Vector2 moneySpeed;
 
+        Texture2D fallingmoneyTexture;
+        Rectangle fallingmoneyRect, moneyfallingrect2;
+
         Random Random = new Random();
 
         Texture2D buttonTexture;
@@ -36,8 +39,8 @@ namespace clicker_game
         float clickUpgrade, factoryUpgrade;
         float clickUpgradeIncrease, factoryUpgradeIncrease;
         float clickpowerincrease;
-        bool done1, moneydraw, moneydraw2, done4, done5, done6, done7, done8, done9, done10;
-        float seconds, totalTime;
+        bool done1, moneydraw, moneydraw2, timebool, done5, done6, done7, done8, done9, done10;
+        float seconds, totalTime, randomnumber;
 
 
         List<Rectangle> factories;
@@ -63,8 +66,10 @@ namespace clicker_game
             buttonRect = new Rectangle(0, 0, 350, 350);
             boxRect1 = new Rectangle(500, 0, 350, 125);
             boxRect2 = new Rectangle(500, 125, 350, 125);
-            moneySpeed = new Vector2(10, 10);
+            moneySpeed = new Vector2(5, 5);
             moneyRect = new Rectangle(0, 0, 100, 100);
+            fallingmoneyRect = new Rectangle(0, -600, 800, 600);
+            moneyfallingrect2 = new Rectangle(0, -1200, 800, 600);
 
 
 
@@ -82,9 +87,11 @@ namespace clicker_game
             done1 = true;
             moneydraw = true;
             moneydraw2 = false;
+            timebool = false;
             
             seconds = 0;
             totalTime = 0;
+            randomnumber = Random.Next(1,10);
 
         }
 
@@ -101,6 +108,7 @@ namespace clicker_game
             coolbackround = Content.Load<Texture2D>("cool background (1)");
             introbox = Content.Load<Texture2D>("intro (1)");
             moneyTexture = Content.Load<Texture2D>("money");
+            fallingmoneyTexture = Content.Load<Texture2D>("canva money falling");
         }
 
         protected override void Update(GameTime gameTime)
@@ -236,8 +244,11 @@ namespace clicker_game
                 moneySpeed.Y *= -1;
             }
 
-            if (totalTime >= Random.Next(1, 10))
+            if (totalTime >= randomnumber)
             {
+                timebool = true;
+                if(timebool == true && moneydraw2 == false)
+                    totalTime = randomnumber;
                 if (moneydraw2 == false)
                 {
                     moneydraw = false;
@@ -251,6 +262,22 @@ namespace clicker_game
                     }
 
                 }
+                if (totalTime >= randomnumber && totalTime <= randomnumber + 30)
+                {
+                    if (moneydraw2 == true)
+                    {
+                        fallingmoneyRect.Y += 4;
+                        moneyfallingrect2.Y += 4;
+                        if(fallingmoneyRect.Y >= 600)
+                        {
+                            fallingmoneyRect.Y = -600;
+                        }
+                        if (moneyfallingrect2.Y >= 600)
+                        {
+                            moneyfallingrect2.Y = -600;
+                        }
+                    }
+                }
             }
 
 
@@ -258,7 +285,7 @@ namespace clicker_game
 
 
 
-                if (points >= factoryUpgrade)
+            if (points >= factoryUpgrade)
             {
                 if (mouseState.LeftButton == ButtonState.Pressed && prevmouseState.LeftButton == ButtonState.Released)
                 {
@@ -307,6 +334,14 @@ namespace clicker_game
             if (done1 == true)
             {
                 _spriteBatch.Draw(introbox, window, Color.White);
+            }
+            if (totalTime >= randomnumber && totalTime <= randomnumber + 30)
+            {
+                if (moneydraw2 == true)
+                {
+                    _spriteBatch.Draw(fallingmoneyTexture, moneyfallingrect2, Color.White);
+                    _spriteBatch.Draw(fallingmoneyTexture,fallingmoneyRect, Color.White);
+                }
             }
 
 
