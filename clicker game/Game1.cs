@@ -40,7 +40,7 @@ namespace clicker_game
         float clickUpgradeIncrease, factoryUpgradeIncrease;
         float clickpowerincrease;
         bool done1, moneydraw, moneydraw2, timebool, done5, done6, done7, done8, done9, done10;
-        float seconds, totalTime, randomnumber;
+        float seconds, totalTime, randomnumber, clickpowerbefore, number;
 
 
         List<Rectangle> factories;
@@ -88,10 +88,12 @@ namespace clicker_game
             moneydraw = true;
             moneydraw2 = false;
             timebool = false;
+            number = 0;
             
             seconds = 0;
             totalTime = 0;
             randomnumber = Random.Next(1,10);
+            clickpowerbefore = 0;
 
         }
 
@@ -257,8 +259,12 @@ namespace clicker_game
                 {
                     if(moneyRect.Contains(mouseState.Position))
                     {
+                        clickpowerbefore = clickPower;
+                        clickPower *= 5;
+
                         moneydraw = true;
                         moneydraw2 = true;
+
                     }
 
                 }
@@ -266,8 +272,8 @@ namespace clicker_game
                 {
                     if (moneydraw2 == true)
                     {
-                        fallingmoneyRect.Y += 4;
-                        moneyfallingrect2.Y += 4;
+                        fallingmoneyRect.Y += 12;
+                        moneyfallingrect2.Y += 12;
                         if(fallingmoneyRect.Y >= 600)
                         {
                             fallingmoneyRect.Y = -600;
@@ -276,8 +282,14 @@ namespace clicker_game
                         {
                             moneyfallingrect2.Y = -600;
                         }
+
                     }
                 }
+                if (totalTime >= randomnumber + 30 && number == 0)
+                {
+                    clickPower -= clickpowerbefore;
+                }
+                number = 5;
             }
 
 
