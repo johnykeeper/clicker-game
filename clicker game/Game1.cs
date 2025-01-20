@@ -32,7 +32,7 @@ namespace clicker_game
         Rectangle factoryRect1, factoryRect2, factoryRect3, factoryRect4, factoryRect5, factoryRect6, factoryRect7, factoryRect8, factoryRect9, factoryRect10;
         MouseState mouseState;
         MouseState prevmouseState;
-        SpriteFont pointsFont;
+        SpriteFont pointsFont, pointsFont1;
         Texture2D coolbackround;
         float points;
         float clickPower;
@@ -105,6 +105,7 @@ namespace clicker_game
 
             buttonTexture = Content.Load<Texture2D>("button");
             pointsFont = Content.Load<SpriteFont>("pointsFont");
+            pointsFont1 = Content.Load<SpriteFont>("pointsFont1");
             boxTexture = Content.Load<Texture2D>("beige box");
             factoryTexture = Content.Load<Texture2D>("Factory");
             coolbackround = Content.Load<Texture2D>("cool background (1)");
@@ -329,7 +330,7 @@ namespace clicker_game
             _spriteBatch.Draw(coolbackround, window, Color.White);
            
             _spriteBatch.Draw(buttonTexture, buttonRect, Color.White);
-            _spriteBatch.DrawString(pointsFont, points.ToString(" points: 00"), new Vector2(400, 0), Color.Black);
+            _spriteBatch.DrawString(pointsFont1, points.ToString(" points: 00"), new Vector2(250, 0), Color.Black);
             
             _spriteBatch.Draw(boxTexture, boxRect1, Color.Orange);
             _spriteBatch.Draw(boxTexture, boxRect2, Color.Green);

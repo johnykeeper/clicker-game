@@ -85,6 +85,12 @@
 /processorParam:TextureFormat=Color
 /build:intro (1).png
 
+#begin money-soundfx.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:money-soundfx.mp3
+
 #begin money.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -103,4 +109,11 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:pointsFont.spritefont
+
+#begin pointsFont1.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:pointsFont1.spritefont
 
